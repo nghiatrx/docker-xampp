@@ -1,4 +1,4 @@
-## Upgrade Xampp version, now support php 7.
+## Upgrade Xampp version, with php 7.1 and composer 1.4
 
 ##1. Build from Dockerfile
 
