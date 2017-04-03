@@ -12,6 +12,8 @@ RUN chmod 755 xampp-linux-installer.run
 RUN ./xampp-linux-installer.run
 RUN ln -sf /opt/lampp/lampp /usr/bin/lampp
 
+RUN rm xampp-linux-installer.run
+
 # Enable XAMPP web interface(remove security checks)
 RUN sed -i.bak s'/Require local/Require all granted/g' /opt/lampp/etc/extra/httpd-xampp.conf
 
@@ -56,5 +58,12 @@ EXPOSE 80
 # write a startup script
 RUN echo '/opt/lampp/lampp start' >> /startup.sh
 RUN echo '/usr/bin/supervisord -n' >> /startup.sh
+
+RUN echo 'export PATH=$PATH:/opt/lampp/bin' >> ~/.bashrc
+
+# install composer
+RUN ./opt/lampp/bin/php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+RUN ./opt/lampp/bin/php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+RUN ./opt/lampp/bin/php -r "unlink('composer-setup.php');"
 
 CMD ["sh", "/startup.sh"]
